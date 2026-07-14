@@ -1,0 +1,740 @@
+:root {
+  --primary: #003366;
+  --primary-light: #1a4f7a;
+  --accent: #d4af37;
+  --danger: #d9534f;
+  --success: #5cb85c;
+  --dark: #1a1a1a;
+  --light-bg: #f0f4f8;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --text-main: #1e2b3c;
+  --text-muted: #4a5b6e;
+  --border: #dce3ec;
+  --astu-watermark: rgba(0, 51, 102, 0.07);
+  --shadow-sm: 0 10px 30px rgba(0, 20, 40, 0.08);
+  --shadow-hover: 0 20px 40px rgba(0, 20, 40, 0.15);
+  --radius-lg: 28px;
+  --radius-md: 18px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    sans-serif;
+  background: var(--light-bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+  position: relative;
+}
+
+/* --- WATERMARK (background blurred) --- */
+.watermark-bg {
+  position: fixed;
+  top: -17px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.watermark-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.08;
+  transform: rotate(0deg) scale(1.2);
+  user-select: none;
+}
+
+.watermark-content .watermark-text {
+  font-size: 17rem;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: 18px;
+  text-shadow: 0 0 20px rgba(0, 51, 102, 0.2);
+  line-height: 1;
+  margin-top: -10px;
+}
+
+.watermark-content .watermark-text2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(55, 65, 212, 0.3);
+}
+
+/* --- HEADER modern --- */
+.app-header {
+  background: var(--primary);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  position: relative;
+  z-index: 10;
+  border-bottom: 3px solid var(--accent);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  background: white;
+  border-radius: 50%;
+  padding: 6px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-text {
+  color: white;
+}
+
+.header-text h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.header-text .sub {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.version-badge {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  padding: 6px 16px;
+  border-radius: 40px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  color: #f5e56b;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.version-badge i {
+  font-size: 0.7rem;
+}
+.logo-placeholder {
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  margin-right: 20px;
+  object-fit: cover;
+  padding: 2px;
+}
+
+/* --- MAIN CONTENT (center with blur behind) --- */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  position: relative;
+  z-index: 5;
+}
+
+/* --- Cards & Containers --- */
+.container {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* card with glassmorphism + blurred background effect */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  box-shadow:
+    var(--shadow-sm),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* --- SEB Portal (index.html) --- */
+.portal-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.portal-header h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.portal-header .subhead {
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  border-top: 2px solid var(--accent);
+  display: inline-block;
+  padding-top: 8px;
+  padding-inline: 20px;
+}
+
+/* exam buttons container */
+#exam-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.exam-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 22px 20px;
+  background: var(--primary);
+  color: white;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 60px;
+  border: none;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.exam-btn i {
+  font-size: 1.6rem;
+  opacity: 0.7;
+}
+
+.exam-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.exam-btn:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 12px 0 rgba(0, 0, 0, 0.08),
+    0 12px 28px rgba(0, 51, 102, 0.25);
+  background: var(--primary-light);
+}
+
+.exam-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* status / loading / error */
+.status-message {
+  text-align: center;
+  padding: 28px 10px;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 60px;
+  border: 1px dashed var(--border);
+}
+
+.status-message .icon {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 8px;
+  color: var(--primary);
+}
+
+/* footer */
+.app-footer {
+  background: var(--dark);
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  padding: 16px 20px;
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 10;
+}
+
+.app-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* responsive */
+@media (max-width: 600px) {
+  .app-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 16px;
+  }
+  .header-left {
+    justify-content: center;
+  }
+  .header-right {
+    justify-content: center;
+  }
+  .card {
+    padding: 28px 18px;
+  }
+  .portal-header h1 {
+    font-size: 1.7rem;
+  }
+  .exam-btn {
+    font-size: 1.2rem;
+    padding: 18px 16px;
+  }
+  .watermark-content .watermark-text {
+    font-size: 6rem;
+    letter-spacing: 8px;
+  }
+  .watermark-content img {
+    width: 140px;
+  }
+}
+
+/* --- Admin Dashboard --- */
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+.admin-toolbar h3 {
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+.btn-logout {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin: 25px 0 15px 0;
+  border-left: 4px solid var(--accent);
+  padding-left: 10px;
+}
+
+.auto-redirect-box {
+  background: #eef7ff;
+  border: 1px solid var(--primary-light);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+.auto-redirect-box label {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+.auto-redirect-box input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primary);
+}
+
+.exam-entry {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.exam-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.exam-entry-header h4 {
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+.btn-remove {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+}
+input[type="color"] {
+  height: 45px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.btn-add {
+  background: white;
+  color: var(--primary);
+  border: 2px dashed var(--primary-light);
+  width: 100%;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 25px;
+  transition: 0.2s;
+}
+.btn-add:hover {
+  background: #f8f9fa;
+}
+
+.btn-save {
+  background: var(--success);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(92, 184, 92, 0.3);
+  transition: 0.2s;
+}
+.btn-save:hover {
+  background: #4cae4c;
+}
+
+/* --- Login Page Specific --- */
+.login-card {
+  max-width: 450px;
+  margin: 0 auto;
+  text-align: center;
+}
+.login-card .logo-placeholder {
+  margin: 0 auto 20px auto;
+  width: 80px;
+  height: 80px;
+}
+#loginForm .form-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+#loginForm button {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+#loginForm button:hover {
+  background: var(--primary-light);
+}
+
+.login-error {
+  color: #721c24;
+  background: #f8d7da;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: none;
+  font-weight: 600;
+  border: 1px solid #f5c6cb;
+}
+
+/* --- Auto Logout Warning --- */
+#logout-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  display: none;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+#logout-warning .warning-box {
+  background: var(--danger);
+  padding: 40px;
+  border-radius: 12px;
+}
+#logout-warning h2 {
+  margin-bottom: 10px;
+}
+#logout-warning button {
+  background: white;
+  color: var(--danger);
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+/* --- Toggle Switch for Auto Redirect --- */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  vertical-align: middle;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: var(--primary);
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* --- Exam List Display Mode --- */
+.exam-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 15px 20px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+.exam-info {
+  flex: 1;
+}
+.exam-name-display {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.exam-url-display {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  word-break: break-all;
+}
+.exam-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+.btn-edit {
+  background: #eef7ff;
+  color: var(--primary-light);
+}
+.btn-edit:hover {
+  background: #daeaff;
+}
+.btn-delete {
+  background: #fff5f5;
+  color: var(--danger);
+}
+.btn-delete:hover {
+  background: #ffdcdc;
+}
+
+/* --- Exam Inline Edit Form --- */
+.edit-form-container {
+  background: var(--light-bg);
+  border: 1px solid var(--primary-light);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+.edit-form-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+.btn-save-edit {
+  background: var(--primary);
+  color: white;
+}
+.btn-cancel-edit {
+  background: #e0e0e0;
+  color: var(--dark);
+}
+
+/* --- Add New Exam Inline Form --- */
+.add-form-container {
+  background: white;
+  border: 2px dashed var(--primary-light);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  display: none;
+}
+.add-form-container.active {
+  display: block;
+  border: 2px solid var(--primary);
+}
+.inline-form-group {
+  margin-bottom: 12px;
+}
+.inline-form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.btn-confirm-add {
+  background: var(--success);
+  color: white;
+  width: auto;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+}
+/* Added for loading state */
+body.loading {
+  cursor: wait;
+}
+body.loading #btn-save-exams {
+  opacity: 0.6;
+  pointer-events: none; /* Prevents double clicks */
+}

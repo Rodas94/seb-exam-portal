@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to push the commit back to the repo
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract Metadata (Tags, Labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: rodas01/seb-exam-portal
+          tags: |
+            type=sha,prefix= # Commmit SHA only (e.g., a1b2c3d)
+            latest
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=registry,ref=rodas01/seb-exam-portal:buildcache
+          cache-to: type=registry,ref=rodas01/seb-exam-portal:buildcache,mode=max
+
+      # --- GitOps Step: Update Deployment Manifest ---
+      - name: Update Image Tag in Kubernetes Manifest
+        env:
+          SHA_TAG: ${{ github.sha }}
+        run: |
+          # Replace the image tag in deployment.yaml with the commit SHA
+          sed -i "s|rodas01/seb-exam-portal:.*|rodas01/seb-exam-portal:${SHA_TAG}|g" k8s/deployment.yaml
+
+      - name: Commit and Push Updated Manifest
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "ci: update deployment image tag to ${{ github.sha }}"
+          file_pattern: "k8s/deployment.yaml"

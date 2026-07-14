@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "username": "astu_admin",
+    "password": "$2b$10$DsmBHPWUkFR0JNfUukjs3eOAazXucCJ8KzTFmwO5OXonvSMwq1jD."
+  },
+  {
+    "id": "2",
+    "username": "examadmin",
+    "password": "$2b$10$dvpQMTgb9LggWEnLJxS7cOEAIbnruIYiOWlPd97tY18vy7D0q1h5S"
+  }
+]

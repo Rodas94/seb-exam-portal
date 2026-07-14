@@ -1,0 +1,24 @@
+{
+  "exams": {
+    "exam_1784019607313": {
+      "name": "bhh",
+      "url": "https://www.googggggggggle.com/",
+      "color": "#003366"
+    },
+    "exam_1784019629024": {
+      "name": "j",
+      "url": "https://www.googggggggggle.com/",
+      "color": "#003366"
+    },
+    "exam_1784019677537": {
+      "name": "nnnn",
+      "url": "https://www.google.com/",
+      "color": "#003366"
+    }
+  },
+  "auto_redirect": {
+    "enabled": false,
+    "url": "https://www.google.com/",
+    "delay": 5
+  }
+}

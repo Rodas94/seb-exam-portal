@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - ASTU</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="header-left">
+        <img
+          src="/images/images.png"
+          alt="Adama Science and Technology University"
+          class="logo-img"
+        />
+        <div class="header-text">
+          <h1>Adama Science and Technology University</h1>
+          <div class="sub">
+            Exam &bull; SEB Centralized Exam Redirect Manager
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="version-badge"
+          ><i class="fas fa-code-branch"></i> v2.0.0</span
+        >
+        <span style="font-size: 0.8rem; opacity: 0.6"
+          ><i class="fas fa-shield-alt"></i> SEB</span
+        >
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="container">
+        <div class="card">
+          <div class="admin-toolbar">
+            <h3>Exam Configuration Panel</h3>
+            <a href="/auth/logout" class="btn-logout">Logout</a>
+          </div>
+
+          <!-- Default Auto-Redirect Section -->
+          <div class="section-title">Default Auto-Redirect</div>
+          <div class="auto-redirect-box">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+              "
+            >
+              <label
+                style="
+                  font-weight: 600;
+                  display: flex;
+                  align-items: center;
+                  gap: 15px;
+                  cursor: pointer;
+                  margin: 0;
+                "
+              >
+                <label class="switch">
+                  <input type="checkbox" id="autoRedirectEnabled" />
+                  <span class="slider"></span>
+                </label>
+                Enable Auto-Redirect
+              </label>
+            </div>
+            <div class="form-group" style="margin-bottom: 0">
+              <label for="autoRedirectUrl"
+                >Default Exam URL (Must include https:// or http://)</label
+              >
+              <input
+                type="url"
+                id="autoRedirectUrl"
+                placeholder="https://exam.example.com/default"
+              />
+            </div>
+          </div>
+
+          <!-- Parallel Exams Section -->
+          <div class="section-title">
+            Parallel Exam Links (IT Staff Selection Menu)
+          </div>
+
+          <!-- Add New Exam Form (Hidden by default) -->
+          <div id="add-exam-form" class="add-form-container">
+            <h4 style="margin-bottom: 15px; color: var(--primary)">
+              Add New Exam
+            </h4>
+            <div class="inline-form-group">
+              <input
+                type="text"
+                id="new-exam-name"
+                placeholder="Display Name (e.g., Biology Final)"
+              />
+            </div>
+            <div class="inline-form-group">
+              <input
+                type="url"
+                id="new-exam-url"
+                placeholder="Exam URL (https://...)"
+              />
+            </div>
+            <button id="confirm-add-exam" class="btn-sm btn-confirm-add">
+              Add Exam
+            </button>
+            <button
+              id="cancel-add-exam"
+              class="btn-sm btn-cancel-edit"
+              style="background: #ccc"
+            >
+              Cancel
+            </button>
+          </div>
+
+          <!-- List of Existing Exams -->
+          <div id="exams-list-container">
+            <!-- Items injected here -->
+          </div>
+
+          <button id="btn-show-add-form" class="btn-add">
+            + Add New Parallel Exam
+          </button>
+
+          <button id="btn-save-exams" class="btn-save" style="margin-top: 10px">
+            Save All Settings & Apply to Portal
+          </button>
+
+          <div
+            id="status-msg"
+            style="
+              margin-top: 15px;
+              text-align: center;
+              font-weight: bold;
+              display: none;
+            "
+          ></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Auto Logout Warning Modal -->
+    <div id="logout-warning">
+      <div class="warning-box">
+        <h2>Session Expiring!</h2>
+        <p>
+          Due to inactivity, you will be logged out in
+          <span id="logout-countdown">30</span> seconds.
+        </p>
+        <button id="stay-logged-in">Stay Logged In</button>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <div>
+        © 2026 Adama Science and Technology University &bull; System
+        Administrator <i class="fas fa-lock" style="opacity: 0.6"></i> Secure
+        Exam Environment
+      </div>
+      <div>All rights reserved.</div>
+    </footer>
+
+    <script src="admin-manager.js"></script>
+  </body>
+</html>

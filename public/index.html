@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASTU Exam Portal</title>
+    <!-- Font Awesome (optional but adds icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Watermark with ASTU text + logo (same color tone) -->
+    <div class="watermark-bg">
+      <div class="watermark-content">
+        <div class="watermark-text2">
+          <span><i class="fas fa-shield-alt"></i> SEB</span>
+        </div>
+        <div class="watermark-text">ASTU</div>
+      </div>
+    </div>
+
+    <!-- HEADER with logo, title, version -->
+    <header class="app-header">
+      <div class="header-left">
+        <img
+          src="/images/images.png"
+          alt="Adama Science and Technology University"
+          class="logo-img"
+        />
+        <div class="header-text">
+          <h1>Adama Science and Technology University</h1>
+          <div class="sub">Exam &bull; SEB Centralized Exam Redirect Manager</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="version-badge"
+          ><i class="fas fa-code-branch"></i> v2.0.0</span
+        >
+        <span style="font-size: 0.8rem; opacity: 0.6"
+          ><i class="fas fa-shield-alt"></i> SEB</span
+        >
+      </div>
+    </header>
+
+    <!-- Main content: card with blurred background effect -->
+    <main class="main-content">
+      <div class="container">
+        <div class="card">
+          <div class="portal-header">
+            <h1>📋 Exam Portal</h1>
+            <div class="subhead">
+              IT Staff &bull; select the exam assigned to this station
+            </div>
+          </div>
+
+          <div id="exam-buttons-container">
+            <!-- JS will fill this with buttons or status -->
+            <div class="status-message">
+              <span class="icon"><i class="fas fa-spinner fa-pulse"></i></span>
+              Loading available exams...
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div>© 2026 Adama Science and Technology University &bull; System Administrator <i class="fas fa-lock" style="opacity: 0.6"></i> Secure Exam Environment</div>
+      <div>All rights reserved.</div>
+    </footer>
+    <script src="portal.js"></script>
+  </body>
+</html>

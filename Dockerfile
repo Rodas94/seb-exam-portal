@@ -20,7 +20,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY . .
 
 # Change ownership to the non-root user
-RUN chown -R rod:rod /app
+RUN chown -R appuser:nodeapp /app
 
 # Switch to non-root user
 USER rod

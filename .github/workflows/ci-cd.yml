@@ -45,7 +45,7 @@ jobs:
       # --- GitOps Step: Update Deployment Manifest ---
       - name: Update Image Tag in Kubernetes Manifest
         env:
-          SHA_TAG: ${{ github.sha }}
+          SHA_TAG: ${{ steps.meta.outputs.version }}
         run: |
           # Replace the image tag in deployment.yaml with the commit SHA
           sed -i "s|rodas01/seb-exam-portal:.*|rodas01/seb-exam-portal:${SHA_TAG}|g" k8s/deployment.yaml

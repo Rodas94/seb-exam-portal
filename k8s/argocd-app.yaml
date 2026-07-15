@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seb-exam-portal
+  namespace: argocd # Must be deployed in the Argo CD namespace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Rodas94/seb-exam-portal.git
+    targetRevision: HEAD
+    path: k8s
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: seb-exam-portal
+  syncPolicy:
+    automated:
+      prune: true # Deletes resources removed from Git
+      selfHeal: true # Overrides manual kubectl edits to match Git
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true # Automatically creates the namespace

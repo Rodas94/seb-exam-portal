@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: seb-portal-config
+  namespace: seb-exam-portal
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  # Add other non-sensitive config here

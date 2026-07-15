@@ -322,7 +322,7 @@ async function saveExamConfig(payload) {
   }
 
   const { csrfToken } = await csrfResponse.json();
-
+  console.log("Retrieved CSRF Token:", csrfToken); // Debugging line to verify token retrieval
   // Step 2: Dispatch payload with local exception routing
   try {
     const res = await fetch("/admin/api/exams", {
@@ -392,6 +392,7 @@ document
           response?.data?.error ||
           "Validation Error: Check data formatting.";
         showStatus(errorMsg, "var(--danger)");
+        console.log("Server Response:", response);
         console.error(response.data.errors || response.data.error);
       }
     } catch (err) {

@@ -20,6 +20,7 @@ db.initialize();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
 
 // ==========================================
 // 1. GLOBAL CORE & SECURITY PARSERS
@@ -148,8 +149,8 @@ app.use((error, req, res, next) => {
 //app.listen(PORT, () => {
 // console.log(`Server running on http://localhost:${PORT}`);
 //});
-const server = app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+const server = app.listen(PORT, HOST, () => {
+    console.log(`Server is running globally on port ${PORT}`);
 });
 
 // Fix Keep-Alive race conditions in Node.js

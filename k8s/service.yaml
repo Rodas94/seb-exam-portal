@@ -4,7 +4,7 @@ metadata:
   name: seb-portal-lb
   namespace: seb-exam-portal
   annotations:
-    metallb.universe.tf/address-pool: lab-pool # Change from 'default' to 'lab-pool'
+    metallb.universe.tf/address-pool: default
 spec:
   type: LoadBalancer
   loadBalancerIP: 192.168.1.11 # Forces MetalLB to assign this specific IP

@@ -13,4 +13,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80 # External port accessible by IT staff
-      targetPort: 80 # Internal container port
+      targetPort: 3000 # Internal container port

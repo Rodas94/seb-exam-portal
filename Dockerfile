@@ -23,7 +23,7 @@ COPY . .
 RUN chown -R appuser:nodeapp /app
 
 # Switch to non-root user
-USER rod
+USER appuser
 
 # Expose the port your Express app runs on (assuming 3000 based on previous context)
 EXPOSE 3000

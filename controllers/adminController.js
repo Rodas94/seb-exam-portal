@@ -12,7 +12,16 @@ exports.getExams = (req, res, next) => {
 
 exports.updateExams = async (req, res, next) => {
   // DEBUGGER: Log incoming payload to check what GitOps/Production is actually sending
-  console.log("[DEBUG] updateExams incoming body:", JSON.stringify(req.body, null, 2));
+
+  console.log(
+    "[DEBUG] updateExams incoming body:",
+    JSON.stringify(req.body, null, 2),
+  );
+
+  console.log(
+    "[DEBUG] updateExams incoming body:",
+    JSON.stringify(req.body, null, 2),
+  );
 
   // Validate the request body using express-validator
   const errors = validationResult(req);
@@ -26,7 +35,7 @@ exports.updateExams = async (req, res, next) => {
   try {
     // DEBUGGER: Log right before saving to data source/file
     console.log("[DEBUG] Validation passed. Saving exam config...");
-    
+
     await ExamModel.save(req.body);
 
     console.log("[DEBUG] Exam config saved successfully.");

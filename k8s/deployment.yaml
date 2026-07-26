@@ -6,7 +6,7 @@ metadata:
   labels:
     app: seb-exam-portal
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: seb-exam-portal

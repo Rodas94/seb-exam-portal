@@ -378,6 +378,7 @@ document
 
     try {
       const response = await saveExamConfig(configData);
+      console.log("Server Response:", response); // Debugging line to inspect the server response
       if (response.ok && response.data.success) {
         showStatus(
           "Settings saved successfully! Portal is live.",

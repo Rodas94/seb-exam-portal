@@ -151,7 +151,7 @@ app.use((error, req, res, next) => {
 //app.listen(PORT, () => {
 // console.log(`Server running on http://localhost:${PORT}`);
 //});
-const server = app.listen(PORT, HOST, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running globally on port ${PORT}`);
 });
 

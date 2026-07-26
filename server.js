@@ -20,7 +20,6 @@ db.initialize();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const HOST = '0.0.0.0';
 
 // ==========================================
 // 1. GLOBAL CORE & SECURITY PARSERS
@@ -35,8 +34,12 @@ app.use(
     originAgentCluster: false, // Disable for local dev, but enable in production
   }),
 );
-// Enable CORS for development, but restrict in production
-app.use(cors({ origin: process.env.NODE_ENV === "production" ? false : "*" }));
+app.use(
+  cors({
+    origin: true, // Dynamically reflects the request origin (works for localhost and http://192.168.1.11)
+    credentials: true, // Required because you are using cookies/credentials: "include"
+  }),
+);
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 // Parse URL-encoded bodies (as sent by HTML forms)
@@ -72,20 +75,19 @@ app.use(
 // ==========================================
 // 3. CSRF INITIALIZATION & UTILITIES
 // ==========================================
-const isProd = process.env.NODE_ENV === "production";
+// Force isProd to false (or base it on a custom environment variable if you eventually use real HTTPS domains later)
+const isProd = false; // Since http://192.168.1.11/ is plain HTTP
 
 const { doubleCsrfProtection, generateCsrfToken } = doubleCsrf({
   getSecret: () => process.env.CSRF_SECRET || "fallback_csrf_secret",
-  cookieName: isProd ? "__Host-ps-csrf-token" : "ps-csrf-token",
+  cookieName: "ps-csrf-token", // Removed the __Host- prefix because it fails on non-HTTPS IPs
   cookieOptions: {
-    sameSite: "lax", // Standard alignment for the double-submit pattern
+    sameSite: "lax",
     path: "/",
-    secure: isProd,
+    secure: false, // Must be false for plain http:// connections
     signed: false,
   },
   getTokenFromRequest: (req) => req.headers["x-csrf-token"],
-
-  // FIX: Bind the token to the incoming client IP instead of a volatile session ID
   getSessionIdentifier: (req) => req.ip || "anonymous",
 });
 
@@ -150,7 +152,7 @@ app.use((error, req, res, next) => {
 // console.log(`Server running on http://localhost:${PORT}`);
 //});
 const server = app.listen(PORT, HOST, () => {
-    console.log(`Server is running globally on port ${PORT}`);
+  console.log(`Server is running globally on port ${PORT}`);
 });
 
 // Fix Keep-Alive race conditions in Node.js

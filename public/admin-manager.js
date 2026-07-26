@@ -317,48 +317,61 @@ async function saveExamConfig(payload) {
   const csrfResponse = await fetch("/auth/csrf-token", {
     credentials: "include",
   });
+
+  // 1. Check if the network request failed entirely
   if (!csrfResponse.ok) {
-    throw new Error(`CSRF token retrieval failed: ${csrfResponse.statusText}`);
+    return {
+      ok: false,
+      status: csrfResponse.status,
+      data: { error: `CSRF route returned status ${csrfResponse.status}` },
+    };
+  }
+
+  // 2. Validate that the response is actually JSON before parsing
+  const contentType = csrfResponse.headers.get("content-type");
+  if (!contentType || !contentType.includes("application/json")) {
+    return {
+      ok: false,
+      status: csrfResponse.status,
+      data: {
+        error:
+          "Backend sent HTML instead of a JSON CSRF token. Check backend routing/server logs.",
+      },
+    };
   }
 
   const { csrfToken } = await csrfResponse.json();
-  console.log("Retrieved CSRF Token:", csrfToken); // Debugging line to verify token retrieval
-  // Step 2: Dispatch payload with local exception routing
-  try {
-    const res = await fetch("/admin/api/exams", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken,
-      },
-      credentials: "include",
-      keepalive: false,
-      body: JSON.stringify(payload),
-    });
+  console.log("Retrieved CSRF Token:", csrfToken);
 
+  // Step 2: Make your actual save request using the token
+  const saveResponse = await fetch("/admin/api/exams", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken, // or whatever your CSRF header key is named
+    },
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+
+  // Apply the same JSON validation safety net for the save response
+  const saveContentType = saveResponse.headers.get("content-type");
+  if (!saveContentType || !saveContentType.includes("application/json")) {
     return {
-      ok: res.ok,
-      status: res.status,
-      data: await res.json(),
+      ok: false,
+      status: saveResponse.status,
+      data: {
+        error: `Save failed with status ${saveResponse.status} (HTML response).`,
+      },
     };
-  } catch (err) {
-    // Check if the connection reset happens *after* a successful server process condition
-    if (err.name === "TypeError" && err.message === "Failed to fetch") {
-      console.warn(
-        "Caught expected Node.js Keep-Alive / TCP drop. Forcing successful pipeline recovery.",
-      );
-
-      // Return a simulated structure matching your expected successful JSON
-      return {
-        ok: true,
-        status: 200,
-        data: { success: true, message: "Recovered from local network reset." },
-      };
-    }
-
-    // If it's a completely different real network error, throw it out to the UI
-    throw err;
   }
+
+  const data = await saveResponse.json();
+  return {
+    ok: saveResponse.ok,
+    status: saveResponse.status,
+    data: data,
+  };
 }
 
 document

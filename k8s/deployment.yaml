@@ -13,8 +13,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1 # Allow one extra pod during update
-      maxUnavailable: 0 # Ensure zero downtime; wait for new pod to be ready
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
@@ -22,8 +22,8 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000 # Matches the appuser UID in the Dockerfile
-        fsGroup: 1000
+        runAsUser: 1000
+        fsGroup: 1000 # Critical: Forces Kubernetes to give ownership of the PVC storage to your appuser (UID 1000)
       containers:
         - name: seb-exam-portal
           image: rodas01/seb-exam-portal:latest
@@ -31,6 +31,9 @@ spec:
           ports:
             - containerPort: 3000
               protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data # Connects the PVC storage to your app's data folder
+              name: exam-data-storage
           envFrom:
             - configMapRef:
                 name: seb-portal-config
@@ -47,7 +50,7 @@ spec:
             httpGet:
               path: /health
               port: 3000
-            initialDelaySeconds: 15 # Time to start up
+            initialDelaySeconds: 15
             periodSeconds: 20
             failureThreshold: 3
           readinessProbe:
@@ -57,3 +60,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
             failureThreshold: 3
+      volumes:
+        - name: exam-data-storage
+          persistentVolumeClaim:
+            claimName: seb-exam-pvc # Links to the PVC we created above

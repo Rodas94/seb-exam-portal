@@ -10,25 +10,33 @@ exports.getExams = (req, res, next) => {
   }
 };
 
-// 1. Add 'async' here ⬇️
 exports.updateExams = async (req, res, next) => {
+  // DEBUGGER: Log incoming payload to check what GitOps/Production is actually sending
+  console.log("[DEBUG] updateExams incoming body:", JSON.stringify(req.body, null, 2));
+
   // Validate the request body using express-validator
-  //e.g., check for required fields, valid URLs, etc.
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    // DEBUGGER: Log validation errors if the request gets rejected with 400
+    console.warn("[DEBUG] Validation failed:", errors.array());
     return res.status(400).json({ success: false, errors: errors.array() });
   }
 
   try {
-    // 2. Add 'await' here so the database/file finish writing completely ⬇️
+    // DEBUGGER: Log right before saving to data source/file
+    console.log("[DEBUG] Validation passed. Saving exam config...");
+    
     await ExamModel.save(req.body);
 
+    console.log("[DEBUG] Exam config saved successfully.");
     res.json({
       success: true,
       message: "Parallel exam configurations updated successfully.",
     });
   } catch (err) {
+    // DEBUGGER: Log unexpected server/database/file write errors
+    console.error("[DEBUG] Error saving exam config:", err);
     next(err);
   }
 };

@@ -49,10 +49,24 @@ document
 async function init() {
   try {
     const res = await fetch("/admin/api/exams");
+
     if (res.status === 401) return (window.location.href = "/auth/login");
+
     const data = await res.json();
-    //console.log("Fetched exam data from server:", data);
-    // Load data, ensuring structure exists
+
+    // Catch the backend validation error before processing data structure
+    if (!res.ok || data.success === false) {
+      console.error(
+        "❌ Backend Database Error Details:",
+        data.details || data.error,
+      );
+      showStatus(
+        `Failed to read database: ${data.details || ""}`,
+        "var(--danger)",
+      );
+      return;
+    }
+
     configData = data.data || {};
     if (!configData.exams) configData.exams = {};
     if (!configData.auto_redirect)
@@ -64,6 +78,7 @@ async function init() {
     renderExamList();
     startInactivityTimer();
   } catch (err) {
+    console.error("Frontend Pipeline Crash:", err);
     showStatus("Failed to load exam data.", "var(--danger)");
   }
 }

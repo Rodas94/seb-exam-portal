@@ -4,9 +4,32 @@ const { validationResult } = require("express-validator");
 exports.getExams = (req, res, next) => {
   try {
     const exams = ExamModel.getAll();
-    res.json({ success: true, data: exams });
+
+    // 1. Validate the database data structure before sending it
+    if (!exams) {
+      console.warn("Warning: ExamModel.getAll() returned empty or null data.");
+      return res.json({
+        success: true,
+        data: {
+          exams: {},
+          auto_redirect: { enabled: false, url: "", delay: 5 },
+        },
+      });
+    }
+
+    // 2. Guarantee it always returns a clean JSON payload
+    return res.json({ success: true, data: exams });
   } catch (err) {
-    next(err); // Passes error to global handler
+    // 3. Log the actual database failure in your terminal console
+    console.error("CRITICAL Backend Error inside getExams:", err);
+
+    // 4. FORCE a JSON error response instead of passing it to next(err)
+    // This stops the frontend from receiving an HTML webpage crash
+    return res.status(500).json({
+      success: false,
+      error: "Failed to read database.",
+      details: err.message,
+    });
   }
 };
 

@@ -1,16 +1,24 @@
 const fs = require("fs");
 const path = require("path");
 
-// 1. Define the exact path you know works on your local PC
-const localPath = path.join(__dirname, "..", "data", "exams.json");
-let examsFile;
+const fs = require("fs");
+const path = require("path");
 
-// 2. Check the local file first. If it exists, use it!
-if (fs.existsSync(localPath)) {
-  examsFile = localPath;
-} else {
-  // 3. Fallback to Kubernetes path if the local file isn't found
-  examsFile = "/app/data/exams.json";
+// ✅ FIX: Use path.resolve combined with process.cwd() or __dirname
+// This ensures Node finds the file no matter where the container starts execution
+const localPath = path.join(__dirname, "..", "data", "exams.json");
+const k8sPath = path.resolve(process.cwd(), "data", "exams.json");
+
+// If process.cwd() is /app, this looks for /app/data/exams.json dynamically
+let examsFile = fs.existsSync(localPath) ? localPath : k8sPath;
+
+// Double check if it still fails and print a clean diagnostic log
+if (!fs.existsSync(examsFile)) {
+  console.error(
+    `🚨 PATH RESOLUTION MISMATCH: Looked for exams.json at: ${examsFile}`,
+  );
+  // Fall back to the absolute directory container path safely
+  examsFile = path.join("/", "app", "data", "exams.json");
 }
 
 console.log("Selected Database Path Location:", examsFile);

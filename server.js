@@ -19,6 +19,7 @@ const db = require("./config/db");
 db.initialize();
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 
 // ==========================================
@@ -80,15 +81,23 @@ const isProd = false; // Since http://192.168.1.11/ is plain HTTP
 
 const { doubleCsrfProtection, generateCsrfToken } = doubleCsrf({
   getSecret: () => process.env.CSRF_SECRET || "fallback_csrf_secret",
-  cookieName: "ps-csrf-token", // Removed the __Host- prefix because it fails on non-HTTPS IPs
+  cookieName: "ps-csrf-token",
   cookieOptions: {
     sameSite: "lax",
     path: "/",
-    secure: false, // Must be false for plain http:// connections
+    secure: false, // matches plain http://192.168.1.11 context
     signed: false,
   },
   getTokenFromRequest: (req) => req.headers["x-csrf-token"],
-  getSessionIdentifier: (req) => req.ip || "anonymous",
+  getSessionIdentifier: (req) => "stable-cluster-session", // resolves the Kubernetes proxy IP bug
+
+  // ✅ CRITICAL FIX: Tell doubleCsrf to forward errors to your errorHandler
+  errorHandler: (err, req, res, next) => {
+    // Set a custom status code so your handler knows it's a CSRF failure
+    err.statusCode = 403;
+    err.message = `CSRF Validation Failed: ${err.message}`;
+    next(err);
+  },
 });
 
 // ==========================================

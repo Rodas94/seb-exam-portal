@@ -2,8 +2,6 @@ const ExamModel = require("../models/examModel");
 const { validationResult } = require("express-validator");
 
 exports.getExams = (req, res, next) => {
-  console.log("👉 HIT /api/exams endpoint from IP:", req.ip);
-  console.log("Request Headers:", req.headers);
   try {
     const exams = ExamModel.getAll();
 
@@ -18,7 +16,7 @@ exports.getExams = (req, res, next) => {
         },
       });
     }
-    console.log("Successfully retrieved exams data:", exams);
+    //console.log("Successfully retrieved exams data:", exams);
 
     // 2. Guarantee it always returns a clean JSON payload
     return res.json({ success: true, data: exams });

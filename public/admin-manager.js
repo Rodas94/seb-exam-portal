@@ -49,7 +49,11 @@ document
 async function init() {
   try {
     const res = await fetch("/admin/api/exams", {
-      credentials: "include",
+      method: "GET",
+      credentials: "include", // 👈 Crucial: Forces browser to send the session cookie to the server
+      headers: {
+        Accept: "application/json",
+      },
     });
 
     if (res.status === 401) return (window.location.href = "/auth/login");

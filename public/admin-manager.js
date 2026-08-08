@@ -50,7 +50,7 @@ async function init() {
   try {
     const res = await fetch("/admin/api/exams", {
       method: "GET",
-      credentials: "include", // 👈 Crucial: Forces browser to send the session cookie to the server
+      credentials: "include", // Forces browser to send the session cookie to the server
       headers: {
         Accept: "application/json",
       },

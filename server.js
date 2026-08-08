@@ -19,6 +19,9 @@ const db = require("./config/db");
 db.initialize();
 
 const app = express();
+
+// ==========================================
+// 0. TRUST PROXY FOR KUBERNETES ENVIRONMENT
 app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 // ==========================================

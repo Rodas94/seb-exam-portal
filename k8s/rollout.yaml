@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: seb-exam-portal
+  namespace: seb-exam-portal
+  labels:
+    app: seb-exam-portal
+spec:
+  replicas: 5 # Set to 5 total pods so weight mapping aligns with your example (20% = 1 pod)
+  selector:
+    matchLabels:
+      app: seb-exam-portal
+  template:
+    metadata:
+      labels:
+        app: seb-exam-portal
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: seb-exam-portal
+          image: rodas01/seb-exam-portal:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: exam-data-storage
+          envFrom:
+            - configMapRef:
+                name: seb-portal-config
+            - secretRef:
+                name: seb-portal-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: exam-data-storage
+          persistentVolumeClaim:
+            claimName: seb-exam-pvc
+  strategy:
+    canary:
+      # Step-based rollout matching your 20% traffic distribution request
+      steps:
+        - setWeight: 20 # 20% traffic to canary (1 out of 5 pods)
+        - pause: { duration: 10m } # Pause for 10 minutes to monitor logs/metrics before promoting automatically

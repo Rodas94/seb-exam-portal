@@ -18,6 +18,7 @@ dotenv.config();
 const db = require("./config/db");
 db.initialize();
 
+// ==========================================
 const app = express();
 
 // ==========================================

@@ -15,6 +15,7 @@ const loginLimiter = rateLimit({
   },
 });
 
+// Routes for login and logout
 router.get("/login", authCtrl.showLogin);
 router.post("/login", loginLimiter, authCtrl.handleLogin);
 router.get("/logout", authCtrl.handleLogout);

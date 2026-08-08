@@ -2,6 +2,8 @@ const ExamModel = require("../models/examModel");
 const { validationResult } = require("express-validator");
 
 exports.getExams = (req, res, next) => {
+  console.log("👉 HIT /api/exams endpoint from IP:", req.ip);
+  console.log("Request Headers:", req.headers);
   try {
     const exams = ExamModel.getAll();
 

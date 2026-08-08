@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-// ✅ FIX: Use path.resolve combined with process.cwd() or __dirname
+// Use path.resolve combined with process.cwd() or __dirname
 // This ensures Node finds the file no matter where the container starts execution
 const localPath = path.join(__dirname, "..", "data", "exams.json");
 const k8sPath = path.resolve(process.cwd(), "data", "exams.json");

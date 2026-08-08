@@ -48,7 +48,9 @@ document
 // --- Data Management ---
 async function init() {
   try {
-    const res = await fetch("/admin/api/exams");
+    const res = await fetch("/admin/api/exams", {
+      credentials: "include",
+    });
 
     if (res.status === 401) return (window.location.href = "/auth/login");
 

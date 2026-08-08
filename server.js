@@ -11,6 +11,7 @@ const errorHandler = require("./middleware/errorHandler");
 
 // --- 1. Import CSRF Dependencies ---
 const cookieParser = require("cookie-parser");
+// --- 2. Import CSRF Dependencies ---
 const { doubleCsrf } = require("csrf-csrf");
 
 // Config & Initialization

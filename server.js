@@ -190,6 +190,7 @@ process.on("SIGTERM", () => {
   }, 10000);
 });
 
+// ==========================================
 process.on("SIGINT", () => {
   console.log("SIGINT received, shutting down gracefully...");
   server.close(() => {

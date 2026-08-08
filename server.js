@@ -115,7 +115,7 @@ app.get("/auth/csrf-token", (req, res) => {
 });
 
 // Health check endpoint for Kubernetes liveness and readiness probes
-app.get("/health", (req, res) => {
+app.get("/", (req, res) => {
   res.setHeader("X-Pod-Name", process.env.HOSTNAME || "local-pod");
   res.status(200).json({ status: "ok" });
 });

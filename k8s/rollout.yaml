@@ -64,4 +64,4 @@ spec:
       # Step-based rollout matching your 20% traffic distribution request
       steps:
         - setWeight: 20 # 20% traffic to canary (1 out of 5 pods)
-        - pause: {} # Pause to allow monitoring and validation of the canary before proceeding
+        - pause: { duration: 10m } # Pause for 10 minutes to monitor canary performance

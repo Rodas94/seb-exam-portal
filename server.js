@@ -110,8 +110,11 @@ app.get("/auth/csrf-token", (req, res) => {
   return res.json({ csrfToken });
 });
 
-// Health check
-app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
+// Health check endpoint for Kubernetes liveness and readiness probes
+app.get("/health", (req, res) => {
+  res.setHeader("X-Pod-Name", process.env.HOSTNAME || "local-pod");
+  res.status(200).json({ status: "ok" });
+});
 
 // ==========================================
 // 5. STATIC COMPONENT ROUTING

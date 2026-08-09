@@ -30,6 +30,7 @@ exports.handleLogin = async (req, res) => {
   }
 };
 
+// Handle logout by destroying the session and clearing the cookie
 exports.handleLogout = (req, res) => {
   req.session.destroy(() => {
     res.clearCookie("connect.sid");

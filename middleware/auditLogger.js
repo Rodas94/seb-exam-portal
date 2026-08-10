@@ -9,7 +9,6 @@ module.exports.logAction = (action) => {
 
     // 1. Ensure directory exists automatically
     if (!fs.existsSync(logDir)) {
-      console.log("📁 Data directory missing, creating it now...");
       fs.mkdirSync(logDir, { recursive: true });
     }
     // 2. Log the action with timestamp, user, and IP
@@ -25,7 +24,7 @@ module.exports.logAction = (action) => {
       if (err) {
         console.error("❌ Failed to write audit log. Error details:", err);
       } else {
-        console.log("✅ Successfully logged to audit.log!");
+        // console.log("✅ Successfully logged to audit.log!");
       }
     });
 

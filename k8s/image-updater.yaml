@@ -8,6 +8,8 @@ spec:
     - namePattern: "seb-exam-portal" # Selects your Application by name
       images: # Specifies the image to watch
         - alias: "portal-image" # A unique alias for this image within the CR [citation:3]
-          imageName: "rodas01/seb-exam-portal:v1.0.0" # The image to track
+          imageName: "rodas01/seb-exam-portal" # The image to track
           commonUpdateSettings: # Settings for this specific image
             updateStrategy: "semver" # A good strategy for versioned tags [citation:5][citation:8]
+            versionConstraint: ">=1.0.0" # Only update to versions >=1.0.0
+            writeBackMethod: "git" # Keep git write-back enabled

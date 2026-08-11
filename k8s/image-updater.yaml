@@ -1,15 +1,17 @@
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: seb-exam-portal-updater # A unique name for this ImageUpdater
-  namespace: argocd # Must be in the same namespace as ArgoCD Applications [citation:2]
+  name: seb-exam-portal-updater
+  namespace: argocd
 spec:
-  applicationRefs: # Defines which ArgoCD Applications to manage [citation:2]
-    - namePattern: "seb-exam-portal" # Selects your Application by name
-      images: # Specifies the image to watch
-        - alias: "portal-image" # A unique alias for this image within the CR [citation:3]
-          imageName: "rodas01/seb-exam-portal" # The image to track
-          commonUpdateSettings: # Settings for this specific image
-            updateStrategy: "semver" # A good strategy for versioned tags [citation:5][citation:8]
-            versionConstraint: ">=1.0.0" # Only update to versions >=1.0.0
-            writeBackMethod: "git" # Keep git write-back enabled
+  applicationRefs:
+    - namePattern: "seb-exam-portal"
+      images:
+        - alias: "portal-image"
+          imageName: "rodas01/seb-exam-portal"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            versionConstraint: ">=1.0.0"
+            # EXPLICITLY ALLOW ONLY SEMVER TAGS (blocks :latest from being picked up)
+            allowTags: "regexp:^v[0-9]+\.[0-9]+\.[0-9]+$"
+            writeBackMethod: "git:secret:argocd/github-crets" # Ensure your git writeback has proper credentials

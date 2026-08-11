@@ -5,8 +5,14 @@ metadata:
   namespace: seb-exam-portal
   labels:
     app: seb-exam-portal
+  annotations:
+    # Tells Image Updater which image alias to watch and write back changes for
+    argocd-image-updater.argoproj.io/image-list: portal-image=rodas01/seb-exam-portal
+    # Sets the update strategy to SemVer and restricts it to your version constraints
+    argocd-image-updater.argoproj.io/portal-image.update-strategy: semver
+    argocd-image-updater.argoproj.io/portal-image.allow-tags: regexp:^v[0-9]+\.[0-9]+\.[0-9]+$
 spec:
-  replicas: 5 # Set to 5 total pods so weight mapping aligns with your example (20% = 1 pod)
+  replicas: 5
   selector:
     matchLabels:
       app: seb-exam-portal
@@ -21,7 +27,8 @@ spec:
         fsGroup: 1000
       containers:
         - name: seb-exam-portal
-          image: rodas01/seb-exam-portal:latest
+          # CHANGED from :latest to v1.0.0
+          image: rodas01/seb-exam-portal:v1.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -61,7 +68,6 @@ spec:
             claimName: seb-exam-pvc
   strategy:
     canary:
-      # Step-based rollout matching your 20% traffic distribution request
       steps:
-        - setWeight: 20 # 20% traffic to canary (1 out of 5 pods)
-        - pause: { duration: 10m } # Pause for 10 minutes to monitor canary performance
+        - setWeight: 20
+        - pause: { duration: 10m }

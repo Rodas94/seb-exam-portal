@@ -9,6 +9,7 @@ const errorHandler = (err, req, res, next) => {
   // Determine status code (default to 500 Internal Server Error)
   const statusCode = err.statusCode || 500;
 
+  // Send a JSON response with error details
   res.status(statusCode).json({
     success: false,
     message: err.message || "An unexpected server error occurred.",

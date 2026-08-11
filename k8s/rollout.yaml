@@ -28,7 +28,7 @@ spec:
       containers:
         - name: seb-exam-portal
           # CHANGED from :latest to v1.0.0
-          image: rodas01/seb-exam-portal:v1.0.0
+          image: rodas01/seb-exam-portal:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

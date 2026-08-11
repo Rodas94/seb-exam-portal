@@ -19,6 +19,8 @@ router.get("/api/exams/available", examCtrl.getAvailableExams);
 // The selection route IT staff clicks
 router.get("/api/exams/select/:examId", examCtrl.selectExam);
 
+// The route SEB hits to load the exam
+// This route is protected by the SEB verification middleware
 router.get("/api/exams/reset", examCtrl.clearSession);
 
 module.exports = router;

@@ -3,9 +3,9 @@ module.exports.requireSEB = (req, res, next) => {
   const userAgent = req.headers["user-agent"] || "";
 
   // TEMPORARY LOGS FOR DEBUGGING
-  console.log("=== SEB MIDDLEWARE TRIGGERED ===");
-  console.log("User-Agent:", userAgent);
-  console.log("Contains 'SEB'?:", userAgent.includes("SEB"));
+  //console.log("=== SEB MIDDLEWARE TRIGGERED ===");
+  //console.log("User-Agent:", userAgent);
+  //console.log("Contains 'SEB'?:", userAgent.includes("SEB"));
 
   // For production, uncomment the following lines to enforce SEB check
   //if (userAgent && userAgent.includes("SEB")) {

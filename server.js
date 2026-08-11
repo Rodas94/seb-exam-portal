@@ -7,7 +7,7 @@ const path = require("path");
 const bcrypt = require("bcryptjs"); // Use bcryptjs for compatibility with Windows
 const FileStore = require("session-file-store")(session); // npm install session-file-store
 const sebVerifyMiddleware = require("./middleware/sebVerifyMiddleware");
-const errorHandler = require("./middleware/errorHandler");
+const errorHandler = require("./middleware/errorHandler"); // Custom error handler middleware
 
 // --- 1. Import CSRF Dependencies ---
 const cookieParser = require("cookie-parser");

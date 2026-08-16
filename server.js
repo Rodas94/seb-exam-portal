@@ -120,7 +120,7 @@ app.get("/auth/csrf-token", (req, res) => {
   return res.json({ csrfToken });
 });
 
-// ========================================== 
+// ==========================================
 app.use((req, res, next) => {
   res.setHeader("X-Pod-Name", process.env.HOSTNAME || "local-pod");
   next();
@@ -134,6 +134,16 @@ app.get("/health", (req, res) => {
 // 5. STATIC COMPONENT ROUTING
 // ==========================================
 app.use(express.static(path.join(__dirname, "public")));
+
+// Clean URL Route: http://192.168.1.11/login
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+// Clean URL Route: http://192.168.1.11/admin
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-manager.html"));
+});
 
 // ==========================================
 // 6. ROUTE APP-STACK & ROUTE PROTECTION

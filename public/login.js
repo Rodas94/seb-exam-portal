@@ -16,7 +16,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (data.success) {
-      window.location.href = "/admin-manager.html";
+      window.location.href = "/admin";
     } else {
       errBox.textContent = data.message || "Login failed";
       errBox.style.display = "block";

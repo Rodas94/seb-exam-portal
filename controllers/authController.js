@@ -2,7 +2,7 @@ const UserModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 
 exports.showLogin = (req, res) => {
-  res.sendFile("login.html", { root: "public" });
+  res.sendFile(path.join(__dirname, "../public/login.html"));
 };
 
 exports.handleLogin = async (req, res) => {
@@ -34,6 +34,6 @@ exports.handleLogin = async (req, res) => {
 exports.handleLogout = (req, res) => {
   req.session.destroy(() => {
     res.clearCookie("connect.sid");
-    res.redirect("/login.html");
+    res.redirect("/login");
   });
 };

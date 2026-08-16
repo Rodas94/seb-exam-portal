@@ -53,6 +53,11 @@ app.use(express.urlencoded({ extended: true }));
 // Initialize cookie-parser first with a secret string so down-line apps can decode cookies
 app.use(cookieParser(process.env.COOKIE_SECRET || "fallback_cookie_secret"));
 
+app.use((req, res, next) => {
+  res.setHeader("X-Pod-Name", process.env.HOSTNAME || "local-pod");
+  next();
+});
+
 // ==========================================
 // 2. SESSION LIFECYCLE MANAGEMENT
 // ==========================================
@@ -115,9 +120,13 @@ app.get("/auth/csrf-token", (req, res) => {
   return res.json({ csrfToken });
 });
 
-// Health check endpoint for Kubernetes liveness and readiness probes
-app.get("/health", (req, res) => {
+// ========================================== 
+app.use((req, res, next) => {
   res.setHeader("X-Pod-Name", process.env.HOSTNAME || "local-pod");
+  next();
+});
+
+app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 

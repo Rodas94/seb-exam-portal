@@ -30,8 +30,8 @@ jobs:
         with:
           images: rodas01/seb-exam-portal
           tags: |
-            type=sha,prefix= # Outputs short 7-char SHA (e.g., 9fb8b3e)
-            latest
+            type=sha,prefix=,format=short
+            type=raw,value=latest
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
@@ -48,10 +48,11 @@ jobs:
           SHA_TAG: ${{ steps.meta.outputs.version }}
         run: |
           # Use SHA_TAG (short SHA from metadata-action) to match Docker Hub
-          sed -i "s|image: rodas01/seb-exam-portal:.*|image: rodas01/seb-exam-portal:${SHA_TAG}|g" k8s/rollout.yaml
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          sed -i "s|image: rodas01/seb-exam-portal:.*|image: rodas01/seb-exam-portal:${SHORT_SHA}|g" k8s/rollout.yaml
 
       - name: Commit and Push Updated Manifest
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "ci: update rollout image tag to ${{ steps.meta.outputs.version }}"
+          commit_message: "ci: update rollout image tag to ${{ github.sha }}"
           file_pattern: "k8s/rollout.yaml"

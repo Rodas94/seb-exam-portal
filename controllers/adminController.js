@@ -37,6 +37,7 @@ exports.getExams = (req, res, next) => {
 exports.updateExams = async (req, res, next) => {
   const errors = validationResult(req);
 
+  // If validation errors exist, return a 400 Bad Request with the error details
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, errors: errors.array() });
   }

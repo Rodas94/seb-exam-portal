@@ -48,7 +48,7 @@ jobs:
           SHA_TAG: ${{ steps.meta.outputs.version }}
         run: |
           # Replace the image tag in rollout.yaml with the commit SHA
-          sed -i "s|rodas01/seb-exam-portal:.*|rodas01/seb-exam-portal:${SHA_TAG}|g" k8s/rollout.yaml
+          sed -i 's|image: rodas01/seb-exam-portal:.*|image: rodas01/seb-exam-portal:${{ github.sha }}|g' K8s/rollout.yaml
 
       - name: Commit and Push Updated Manifest
         uses: stefanzweifel/git-auto-commit-action@v5

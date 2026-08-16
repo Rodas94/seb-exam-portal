@@ -16,5 +16,5 @@ exports.requireAuth = (req, res, next) => {
       .json({ success: false, message: "Unauthorized. Please log in." });
   }
 
-  res.redirect("/login.html");
+  res.redirect("/login");
 };

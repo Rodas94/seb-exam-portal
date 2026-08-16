@@ -137,12 +137,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Clean URL Route: http://192.168.1.11/login
 app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
+  // Use absolute root to avoid path resolution issues on some environments
+  res.sendFile("login.html", { root: path.join(__dirname, "public") });
 });
 
 // Clean URL Route: http://192.168.1.11/admin
 app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin-manager.html"));
+  // Serve the admin manager HTML directly from the public folder
+  res.sendFile("admin-manager.html", { root: path.join(__dirname, "public") });
 });
 
 // ==========================================

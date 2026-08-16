@@ -2,10 +2,8 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - "v*.*.*" # Triggers when pushing a release tag like v1.0.1
+      - "v*.*.*" # Triggers on release tags like v1.0.2, v1.0.3
 
 jobs:
   build-and-push:
@@ -17,16 +15,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set Image Tag
-        id: tag_name
+      - name: Extract Tag Name
+        id: get_version
         run: |
-          # If triggered by a git tag (e.g., v1.0.1), strip the 'v' -> 1.0.1
-          # Otherwise, fallback to the short Git SHA
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            VERSION="${GITHUB_REF#refs/tags/v}"
-          else
-            VERSION=$(echo "${{ github.sha }}" | cut -c1-7)
-          fi
+          # Strips the 'v' prefix to extract clean semver (e.g., v1.0.2 -> 1.0.2)
+          VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
@@ -44,15 +37,16 @@ jobs:
           context: .
           push: true
           tags: |
-            rodas01/seb-exam-portal:${{ steps.tag_name.outputs.VERSION }}
+            rodas01/seb-exam-portal:${{ steps.get_version.outputs.VERSION }}
             rodas01/seb-exam-portal:latest
 
+      # --- GitOps Step: Update Deployment Manifest ---
       - name: Update Image Tag in Kubernetes Manifest
         run: |
-          sed -i "s|image: rodas01/seb-exam-portal:.*|image: rodas01/seb-exam-portal:${{ steps.tag_name.outputs.VERSION }}|g" k8s/rollout.yaml
+          sed -i "s|image: rodas01/seb-exam-portal:.*|image: rodas01/seb-exam-portal:${{ steps.get_version.outputs.VERSION }}|g" k8s/rollout.yaml
 
       - name: Commit and Push Updated Manifest
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "ci: update rollout image tag to ${{ steps.tag_name.outputs.VERSION }}"
+          commit_message: "release: update rollout image tag to ${{ steps.get_version.outputs.VERSION }}"
           file_pattern: "k8s/rollout.yaml"

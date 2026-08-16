@@ -20,7 +20,6 @@ jobs:
       - name: Extract Tag Name
         id: get_version
         run: |
-          # Strips the 'v' prefix to extract clean semver (e.g., v1.0.2 -> 1.0.2)
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
@@ -42,7 +41,6 @@ jobs:
             rodas01/seb-exam-portal:${{ steps.get_version.outputs.VERSION }}
             rodas01/seb-exam-portal:latest
 
-      # --- GitOps Step: Update Deployment Manifest ---
       - name: Update Image Tag in Kubernetes Manifest
         run: |
           sed -i "s|image: rodas01/seb-exam-portal:.*|image: rodas01/seb-exam-portal:${{ steps.get_version.outputs.VERSION }}|g" k8s/rollout.yaml

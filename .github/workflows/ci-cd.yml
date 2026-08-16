@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Extract Tag Name
         id: get_version
@@ -48,5 +50,6 @@ jobs:
       - name: Commit and Push Updated Manifest
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          branch: main
           commit_message: "release: update rollout image tag to ${{ steps.get_version.outputs.VERSION }}"
           file_pattern: "k8s/rollout.yaml"
